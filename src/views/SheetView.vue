@@ -13,6 +13,7 @@ export default {
           value: "",
           column: j,
           isEditing: false,
+          hasError: false,
         })),
       })),
     };
@@ -43,8 +44,12 @@ export default {
     v-for="row in rows"
     :key="row.index"
   >
-    <div v-for="cell in row.cells" :key="cell.column" class="mb-2">
-      <div v-for="[key, value] in Object.entries(cell)" class="text-xs">
+    <div v-for="cell in row.cells" :key="cell.column" class="mb-2 px-1">
+      <div
+        v-for="[key, value] in Object.entries(cell)"
+        class="text-xs"
+        :key="key"
+      >
         {{ key }}: {{ value }}
       </div>
     </div>
