@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-gray-900;
+}
+
+input {
+  @apply bg-transparent border-[1px] border-gray-500 w-full outline-none focus:bg-gray-800 p-1 text-white;
+}
