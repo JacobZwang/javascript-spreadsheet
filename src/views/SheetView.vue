@@ -7,6 +7,8 @@ export default {
   data() {
     return {
       showDebug: false,
+      continuous: true,
+      looping: false,
       columns: Array.from({ length: 21 }, () => ({
         width: 250,
       })),
@@ -45,6 +47,19 @@ export default {
 
       if (saved) {
         this.rows = saved;
+      }
+    },
+
+    tick() {
+      if (this.continuous && !this.looping) {
+        this.looping = true;
+        const loop = () => {
+          if (!this.continuous) return;
+          this.updateDependencies();
+          requestAnimationFrame(loop);
+        };
+
+        loop();
       }
     },
 
@@ -127,11 +142,23 @@ export default {
     this.columns[0].width = 50;
     this.load();
     this.updateDependencies();
+    this.tick();
+  },
+
+  updated() {
+    this.tick();
   },
 };
 </script>
 
 <template>
+  <div class="flex items-center justify-center p-4">
+    <div class="inline-flex text-sm whitespace-nowrap gap-2">
+      <input type="checkbox" v-model="continuous" />
+      <p>continuous refresh</p>
+    </div>
+  </div>
+
   <div
     class="grid"
     :style="{
