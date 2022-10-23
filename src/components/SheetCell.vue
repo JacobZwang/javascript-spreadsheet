@@ -3,6 +3,11 @@
 export default {
   props: ["cell"],
   emits: ["update"],
+  data() {
+    return {
+      showId: false,
+    };
+  },
   updated() {
     if (this.cell.isEditing) {
       this.$refs.input?.focus();
@@ -20,7 +25,7 @@ export default {
 </script>
 
 <template>
-  <div class="grid swap">
+  <div class="grid swap overflow-hidden">
     <input
       v-if="cell.isEditing"
       v-model="cell.value"
@@ -44,9 +49,16 @@ export default {
 
     <div
       v-if="!cell.isEditing"
-      class="text-xs text-right px-1 pointer-events-none text-gray-500"
+      class="text-xs text-right px-1 pointer-events-none text-gray-500 whitespace-nowrap"
     >
       {{ cell.value }}
+    </div>
+
+    <div
+      v-if="showId"
+      class="text-xs text-left px-1 pointer-events-none text-gray-500"
+    >
+      {{ cell.id }}
     </div>
   </div>
 </template>

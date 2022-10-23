@@ -7,7 +7,7 @@ export default {
   data() {
     return {
       showDebug: false,
-      columns: Array.from({ length: 20 }, () => ({
+      columns: Array.from({ length: 21 }, () => ({
         width: 250,
       })),
       rows: Array.from({ length: 20 }, (_, i) => ({
@@ -15,6 +15,7 @@ export default {
         cells: Array.from({ length: 20 }, (_, j) => ({
           value: "",
           id: letters[j] + i,
+          row: i,
           column: letters[j],
           isEditing: false,
           hasError: false,
@@ -107,6 +108,11 @@ export default {
       }
     },
   },
+
+  created() {
+    this.columns[0].width = 50;
+    this.updateDependencies();
+  },
 };
 </script>
 
@@ -119,7 +125,15 @@ export default {
     v-for="row in rows"
     :key="row.index"
   >
+    <div class="text-center input !bg-gray-700 mt-auto">
+      {{ row.index }}
+    </div>
+
     <div v-for="cell in row.cells" :key="cell.column">
+      <div v-if="cell.row === 0" class="text-center input !bg-gray-800">
+        {{ cell.column }}
+      </div>
+
       <Cell :cell="cell" @update="updateDependencies" />
     </div>
   </div>
