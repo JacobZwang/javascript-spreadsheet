@@ -1,27 +1,25 @@
-<!-- eslint-disable vue/no-side-effects-in-computed-properties -->
-<script lang="ts">
-export default {
-  props: ["cell"],
-  emits: ["update"],
-  data() {
-    return {
-      showId: false,
-    };
-  },
-  updated() {
-    if (this.cell.isEditing) {
-      this.$refs.input?.focus();
-    }
-  },
-  computed: {
-    value() {
-      return typeof this.cell.evaluated === "object" &&
-        this.cell.evaluated !== null
-        ? JSON.stringify(this.cell.evaluated).replace(/"([^"]+)":/g, "$1:")
-        : this.cell.evaluated;
-    },
-  },
-};
+<script lang="ts" setup>
+import { computed, onUpdated, ref } from "vue";
+import type Cell from "../types/Cell";
+
+const props = defineProps<{
+  cell: Cell;
+}>();
+
+const showId = ref(false);
+const input = ref<null | HTMLInputElement>(null);
+
+onUpdated(() => {
+  if (props.cell.isEditing) {
+    input.value?.focus();
+  }
+});
+
+const value = computed(() =>
+  typeof props.cell.evaluated === "object" && props.cell.evaluated !== null
+    ? JSON.stringify(props.cell.evaluated).replace(/"([^"]+)":/g, "$1:")
+    : props.cell.evaluated
+);
 </script>
 
 <template>
