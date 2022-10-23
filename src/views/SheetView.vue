@@ -9,6 +9,7 @@ export default {
       showDebug: false,
       continuous: true,
       looping: false,
+      postScript: "",
       columns: Array.from({ length: 21 }, () => ({
         width: 250,
       })),
@@ -139,10 +140,26 @@ export default {
   },
 
   created() {
+    window.sheet = {};
+
     this.columns[0].width = 50;
     this.load();
     this.updateDependencies();
     this.tick();
+
+    this.rows.forEach((r) => {
+      r.cells.forEach((c) => {
+        window.sheet[c.column] ??= new Array(20);
+
+        Object.defineProperty(window.sheet[c.column], c.row, {
+          get: () => c.evaluated,
+          set: (value) => {
+            c.value = value;
+            this.updateDependencies();
+          },
+        });
+      });
+    });
   },
 
   updated() {
@@ -178,6 +195,10 @@ export default {
 
       <Cell :cell="cell" @update="updateDependencies" />
     </div>
+  </div>
+
+  <div>
+    <textarea name="" id="" cols="30" rows="10" :value="postScript"> </textarea>
   </div>
 
   <div v-if="showDebug">
