@@ -8,6 +8,14 @@ export default {
       this.$refs.input?.focus();
     }
   },
+  computed: {
+    value() {
+      return typeof this.cell.evaluated === "object" &&
+        this.cell.evaluated !== null
+        ? JSON.stringify(this.cell.evaluated).replace(/"([^"]+)":/g, "$1:")
+        : this.cell.evaluated;
+    },
+  },
 };
 </script>
 
@@ -27,7 +35,7 @@ export default {
     <input
       @focus="() => (cell.isEditing = true)"
       v-else
-      :value="cell.evaluated"
+      :value="value"
       :class="{
         'bg-red-500/25': cell.hasError,
         'bg-orange-500/25': cell.dependencyError,

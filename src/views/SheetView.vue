@@ -134,12 +134,8 @@ export default {
       :key="row.index"
     >
       <div v-for="cell in row.cells" :key="cell.column" class="mb-2 px-1">
-        <div
-          v-for="[key, value] in Object.entries(cell)"
-          class="text-xs"
-          :key="key"
-        >
-          {{ key }}: {{ value }}
+        <div class="text-xs whitespace-pre-wrap">
+          {{ JSON.stringify(cell, null, 4) }}
         </div>
       </div>
     </div>
