@@ -1,14 +1,15 @@
 <script lang="ts" setup>
 import { onMounted, onUpdated, reactive, ref } from "vue";
 import Cell from "../components/SheetCell.vue";
+import { useDebugStore } from "../stores/options";
 
-const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-const showDebug = ref(false);
 const continuous = ref(true);
 const looping = ref(false);
 const postScript = ref("");
 
+const debug = useDebugStore();
+
+const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const state = reactive({
   rows: Array.from({ length: 20 }, (_, i) => ({
     index: i,
@@ -172,7 +173,6 @@ onMounted(() => {
 });
 
 onUpdated(() => {
-  tick();
   if (!continuous.value) looping.value = false;
 });
 </script>
@@ -182,6 +182,10 @@ onUpdated(() => {
     <div class="inline-flex text-sm whitespace-nowrap gap-4 items-center">
       <input type="checkbox" v-model="continuous" />
       <p>continuous refresh</p>
+    </div>
+    <div class="inline-flex text-sm whitespace-nowrap gap-4 items-center">
+      <input type="checkbox" v-model="debug.showDebug" />
+      <p>show debug info</p>
     </div>
   </div>
 
@@ -210,7 +214,7 @@ onUpdated(() => {
     <textarea name="" id="" cols="30" rows="10" :value="postScript"> </textarea>
   </div>
 
-  <div v-if="showDebug">
+  <div v-if="debug.showDebug">
     <div
       class="grid"
       :style="{

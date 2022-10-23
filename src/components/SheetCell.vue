@@ -1,12 +1,14 @@
 <script lang="ts" setup>
+import { useDebugStore } from "@/stores/options";
 import { computed, onUpdated, ref } from "vue";
 import type Cell from "../types/Cell";
+
+const debug = useDebugStore();
 
 const props = defineProps<{
   cell: Cell;
 }>();
 
-const showId = ref(false);
 const input = ref<null | HTMLInputElement>(null);
 
 onUpdated(() => {
@@ -53,7 +55,7 @@ const value = computed(() =>
     </div>
 
     <div
-      v-if="showId"
+      v-if="debug.showDebug"
       class="text-xs text-left px-1 pointer-events-none text-gray-500"
     >
       {{ cell.id }}
