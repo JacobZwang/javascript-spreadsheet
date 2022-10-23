@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, onUpdated, reactive, ref } from "vue";
+import { onMounted, onUpdated, reactive, ref, watch } from "vue";
 import Cell from "../components/SheetCell.vue";
 import { useDebugStore } from "../stores/options";
 
@@ -172,13 +172,15 @@ onMounted(() => {
   });
 });
 
+watch(continuous, tick);
+
 onUpdated(() => {
   if (!continuous.value) looping.value = false;
 });
 </script>
 
 <template>
-  <div class="flex items-center justify-center p-4">
+  <div class="flex items-center justify-center p-4 gap-8">
     <div class="inline-flex text-sm whitespace-nowrap gap-4 items-center">
       <input type="checkbox" v-model="continuous" />
       <p>continuous refresh</p>
@@ -197,7 +199,12 @@ onUpdated(() => {
     v-for="row in state.rows"
     :key="row.index"
   >
-    <div class="text-center input !bg-gray-700 mt-auto">
+    <div
+      class="text-center input !bg-gray-700 mt-auto"
+      :class="{
+        'h-full': debug.showDebug,
+      }"
+    >
       {{ row.index }}
     </div>
 
@@ -207,27 +214,14 @@ onUpdated(() => {
       </div>
 
       <Cell :cell="cell" @update="tick" />
+
+      <div v-if="debug.showDebug" class="text-xs whitespace-pre-wrap">
+        {{ JSON.stringify(cell, null, 4) }}
+      </div>
     </div>
   </div>
 
   <div>
     <textarea name="" id="" cols="30" rows="10" :value="postScript"> </textarea>
-  </div>
-
-  <div v-if="debug.showDebug">
-    <div
-      class="grid"
-      :style="{
-        gridTemplateColumns: columns.map((c) => c.width + 'px').join(' '),
-      }"
-      v-for="row in state.rows"
-      :key="row.index"
-    >
-      <div v-for="cell in row.cells" :key="cell.column" class="mb-2 px-1">
-        <div class="text-xs whitespace-pre-wrap">
-          {{ JSON.stringify(cell, null, 4) }}
-        </div>
-      </div>
-    </div>
   </div>
 </template>
