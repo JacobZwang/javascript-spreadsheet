@@ -36,6 +36,18 @@ export default {
       return this.rows[row].cells[letters.indexOf(column)];
     },
 
+    save() {
+      localStorage.setItem("sheet", JSON.stringify(this.rows));
+    },
+
+    load() {
+      const saved = JSON.parse(localStorage.getItem("sheet"));
+
+      if (saved) {
+        this.rows = saved;
+      }
+    },
+
     updateDependencies() {
       this.rows.forEach((row) => {
         row.cells.forEach((cell) => {
@@ -106,11 +118,14 @@ export default {
           evaluated.push(next);
         }
       }
+
+      this.save();
     },
   },
 
   created() {
     this.columns[0].width = 50;
+    this.load();
     this.updateDependencies();
   },
 };
