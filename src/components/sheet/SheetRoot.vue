@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import intoCode from "@/utils/intoCode";
-import { onMounted, onUpdated, reactive, ref } from "vue";
+import { onMounted, onUpdated, reactive, ref, watch } from "vue";
 import SheetCell from "@/components/sheet/SheetCell.vue";
 import { useDebugStore } from "@/stores/options";
 import type { Row } from "@/types/sheet";
@@ -237,6 +237,10 @@ onMounted(() => {
 
 onUpdated(() => {
   if (!state.continuous) looping.value = false;
+});
+
+watch(state, () => {
+  if (!looping.value && state.continuous) tick();
 });
 </script>
 
