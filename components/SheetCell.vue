@@ -1,7 +1,7 @@
 <script lang="ts" setup>
-import { useDebugStore } from "@/stores/options";
+import { useDebugStore } from "~/stores/options";
 import { computed, onUpdated, ref } from "vue";
-import type { Cell } from "@/types/sheet";
+import type { Cell } from "~/types/sheet";
 
 const debug = useDebugStore();
 const props = defineProps<{

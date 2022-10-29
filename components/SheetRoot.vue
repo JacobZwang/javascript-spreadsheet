@@ -1,10 +1,9 @@
 <script lang="ts" setup>
-import intoCode from "@/utils/intoCode";
+import intoCode from "~/utils/intoCode";
 import { onMounted, onUpdated, reactive, ref, watch } from "vue";
-import SheetCell from "@/components/sheet/SheetCell.vue";
-import { useDebugStore } from "@/stores/options";
-import type { Row } from "@/types/sheet";
-import { CAPITAL_ALPHABET } from "@/utils/alphabet";
+import { useDebugStore } from "~/stores/options";
+import type { Row } from "~/types/sheet";
+import { CAPITAL_ALPHABET } from "~/utils/alphabet";
 
 const props = defineProps<{
   /** used for identifying sheet in local storage */
@@ -171,8 +170,6 @@ function updateDependencies() {
         }
       }
 
-      // @ts-expect-error: typescript will hate this,
-      // but it's necessary for cell global variables in the eval
       window[next.id] = next.evaluated;
 
       evaluated.push(next);
@@ -185,8 +182,6 @@ function updateDependencies() {
 onMounted(() => {
   // exposes api methods to global window object.
   // useful for settings cell values in bulk
-  // @ts-expect-error: typescript won't let you use method
-  // and string indexing so it's impossible to type this
   window.sheet = {
     update() {
       tick();
