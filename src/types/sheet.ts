@@ -1,4 +1,4 @@
-type Cell = {
+export type Cell = {
   value: string;
   id: string;
   row: number;
@@ -11,4 +11,7 @@ type Cell = {
   evaluated: null | any;
 };
 
-export default Cell;
+export type Row = {
+  index: number;
+  cells: Cell[];
+};

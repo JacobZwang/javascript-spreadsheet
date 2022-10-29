@@ -7,7 +7,7 @@ body {
   font-family: "JetBrains Mono", monospace;
 }
 
-input,
+input:not([type="checkbox"]),
 .input {
   @apply text-sm bg-transparent border-[1px] border-gray-500 w-full outline-none focus:bg-gray-800 py-1 pt-3 px-2 text-white;
 }
