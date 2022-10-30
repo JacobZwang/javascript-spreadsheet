@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {},
   },
-  plugins: [],
+  plugins: [require("daisyui")],
   purge: [
     "./components/**/*.{vue,js}",
     "./layouts/**/*.vue",
@@ -12,4 +12,7 @@ module.exports = {
     "./plugins/**/*.{js,ts}",
     "./nuxt.config.{js,ts}",
   ],
+  daisyui: {
+    themes: ["night"],
+  },
 };

@@ -240,14 +240,30 @@ watch(state, () => {
 </script>
 
 <template>
-  <div class="flex items-center justify-center p-4 gap-8">
-    <div class="inline-flex text-sm whitespace-nowrap gap-4 items-center">
-      <input type="checkbox" v-model="state.continuous" />
-      <p>continuous refresh</p>
+  <div
+    class="flex items-center justify-between p-4 gap-8 sticky top-0 bg-base-100"
+  >
+    <div class="flex gap-8">
+      <div class="inline-flex text-sm whitespace-nowrap gap-4 items-center">
+        <input
+          type="checkbox"
+          class="checkbox checkbox-sm"
+          v-model="state.continuous"
+        />
+        <p>continuous refresh</p>
+      </div>
+      <div class="inline-flex text-sm whitespace-nowrap gap-4 items-center">
+        <input
+          type="checkbox"
+          class="checkbox checkbox-sm"
+          v-model="debug.showDebug"
+        />
+        <p>show debug info</p>
+      </div>
     </div>
-    <div class="inline-flex text-sm whitespace-nowrap gap-4 items-center">
-      <input type="checkbox" v-model="debug.showDebug" />
-      <p>show debug info</p>
+    <div class="flex gap-4">
+      <a href="/signup" class="btn btn-sm btn-primary">sign up</a>
+      <a href="/login" class="btn btn-sm">sign in</a>
     </div>
   </div>
 
@@ -261,7 +277,7 @@ watch(state, () => {
   >
     <!-- row indexes -->
     <div
-      class="text-center input !bg-gray-700 mt-auto"
+      class="text-center sheet-input !bg-gray-700 mt-auto"
       :class="{
         'h-full': debug.showDebug,
       }"
@@ -271,7 +287,7 @@ watch(state, () => {
 
     <div v-for="cell in row.cells" :key="cell.column">
       <!-- column headers -->
-      <div v-if="cell.row === 0" class="text-center input !bg-gray-800">
+      <div v-if="cell.row === 0" class="text-center sheet-input !bg-gray-800">
         {{ cell.column }}
       </div>
 

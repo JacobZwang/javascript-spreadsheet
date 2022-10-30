@@ -3,12 +3,11 @@ import { users } from "../../models";
 interface IRequestBody {
   email: string;
   password: string;
-  username: string;
 }
 
 export default defineEventHandler(async (event) => {
-  console.log("POST /api/users");
-  const { email, password, name } = await useBody<IRequestBody>(event);
+  console.log("POST /api/users/signup");
+  const { email, password } = await useBody<IRequestBody>(event);
   try {
     const userData = await users.findOne({
       email,

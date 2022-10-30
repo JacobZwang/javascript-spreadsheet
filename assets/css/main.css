@@ -3,19 +3,17 @@
 @tailwind utilities;
 
 body {
-  @apply bg-gray-900 text-white;
   font-family: "JetBrains Mono", monospace;
 }
 
-input:not([type="checkbox"]),
-.input {
+.sheet-input {
   @apply text-sm bg-transparent border-[1px] border-gray-500 w-full outline-none focus:bg-gray-800 py-1 pt-3 px-2 text-white;
 }
 
-.swap > * {
+.grid-swap > * {
   grid-area: 1 / 1;
 }
 
-textarea {
-  @apply bg-transparent w-full;
+.input {
+  @apply focus:outline-none;
 }

@@ -6,7 +6,7 @@ interface IRequestBody {
 }
 
 export default defineEventHandler(async (event) => {
-  console.log("POST /api/users/signin");
+  console.log("POST /api/users/login");
   const { email, password } = await useBody<IRequestBody>(event);
 
   // Check if email is passed.
@@ -39,7 +39,7 @@ export default defineEventHandler(async (event) => {
         // Generate token or create session here
         return {
           id: userData._id,
-          name: userData.name,
+          username: userData.username,
         };
       } else {
         console.log("Password is not valid");

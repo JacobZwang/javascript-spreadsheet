@@ -28,9 +28,10 @@ const prettyEvaluated = computed(() =>
 </script>
 
 <template>
-  <div class="grid swap overflow-hidden">
+  <div class="grid grid-swap overflow-hidden">
     <!-- show input with raw source value when editing -->
     <input
+      class="sheet-input"
       v-if="cell.isEditing"
       v-model="cell.value"
       @blur="
@@ -43,6 +44,7 @@ const prettyEvaluated = computed(() =>
     />
     <!-- show an input with the computed value when not editing -->
     <input
+      class="sheet-input"
       @focus="() => (cell.isEditing = true)"
       v-else
       :value="prettyEvaluated"
