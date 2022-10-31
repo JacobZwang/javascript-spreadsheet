@@ -1,7 +1,7 @@
 import { users } from "../../models";
 
 export default defineEventHandler(async (event) => {
-  const userId = event.context.params.id;
+  const userId = event.context.params.user;
   console.log(`GET /api/users/${userId}`);
   try {
     console.log("Find user");

@@ -2,45 +2,25 @@
 import intoCode from "~/utils/intoCode";
 import { onMounted, onUpdated, reactive, ref, watch } from "vue";
 import { useDebugStore } from "~/stores/options";
-import type { Row } from "~/types/sheet";
+import type { Row, Sheet } from "~/types/sheet";
 import { CAPITAL_ALPHABET } from "~/utils/alphabet";
+import type { UserSession } from "~/types/session";
 
 const props = defineProps<{
   /** used for identifying sheet in local storage */
+  sheet: Sheet;
   id: string;
 }>();
 
 const debug = useDebugStore();
 
+const session = inject("session") as UserSession;
+
 /** stores the values of the expressions and the saved visual state of the table */
-const state = reactive<{
-  rows: Row[];
-  continuous: boolean;
-  columns: {
-    width: number;
-  }[];
-}>({
-  rows: Array.from({ length: 20 }, (_, i) => ({
-    index: i,
-    cells: Array.from({ length: 20 }, (_, j) => ({
-      value: "",
-      id: CAPITAL_ALPHABET[j] + i,
-      row: i,
-      column: CAPITAL_ALPHABET[j],
-      isEditing: false,
-      hasError: false,
-      dependencyError: undefined,
-      dependencies: [],
-      dependents: [],
-      evaluated: null,
-    })),
-  })),
-  columns: Array.from({ length: 21 }, () => ({
-    width: 250,
-  })),
-  /** determines if app should recompute values every frame */
-  continuous: false,
-});
+const state = reactive<Sheet>(props.sheet);
+
+// the first column is the row indexes so it should be smaller
+state.columns[0].width = 50;
 
 // keep track of if the sheet it already looping to ensure we don't have multiple loops
 const looping = ref(false);
@@ -53,13 +33,25 @@ function getCell(id: string) {
 }
 
 /** saves the sheet to local storage */
-function save() {
+function saveLocal() {
   localStorage.setItem(
     `sheet-${props.id}`,
     JSON.stringify({
       rows: state.rows,
     })
   );
+}
+
+function saveCloud() {
+  fetch("/api/sheets/" + props.id, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      ...state,
+    }),
+  });
 }
 
 /** loads the sheet from local storage */
@@ -176,7 +168,7 @@ function updateDependencies() {
     }
   }
 
-  save();
+  saveLocal();
 }
 
 onMounted(() => {
@@ -202,10 +194,7 @@ onMounted(() => {
     },
   };
 
-  // the first column is the row indexes so it should be smaller
-  state.columns[0].width = 50;
-
-  load(); // load from local storage
+  if (!props.sheet) load(); // load from local storage
 
   // compute initial values
   updateDependencies();
@@ -241,6 +230,13 @@ watch(state, () => {
 
 <template>
   <Teleport to="#menu-portal">
+    <button
+      class="btn btn-sm btn-primary"
+      @click="saveCloud"
+      :class="{ 'btn-disabled': state.owner !== session?.user?.id }"
+    >
+      save
+    </button>
     <label class="inline-flex text-sm whitespace-nowrap gap-4 items-center">
       <input
         type="checkbox"

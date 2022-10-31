@@ -15,3 +15,14 @@ export type Row = {
   index: number;
   cells: Cell[];
 };
+
+export type Sheet = {
+  owner: string;
+  rows: Row[];
+  continuous: boolean;
+  columns: {
+    width: number;
+  }[];
+  name: string;
+  id: string;
+};

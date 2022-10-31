@@ -7,8 +7,8 @@ module.exports = {
   plugins: [require("daisyui")],
   purge: [
     "./components/**/*.{vue,js}",
-    "./layouts/**/*.vue",
-    "./pages/**/*.vue",
+    "./layouts/**/*.{vue,js}",
+    "./pages/**/*.{vue,js}",
     "./plugins/**/*.{js,ts}",
     "./nuxt.config.{js,ts}",
   ],
