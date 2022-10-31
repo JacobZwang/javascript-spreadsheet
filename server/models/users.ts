@@ -5,7 +5,6 @@ const schema = new mongoose.Schema(
   {
     email: { type: String, unique: true },
     password: { type: String, bcrypt: true },
-    username: String,
   },
   { timestamps: true, strict: true, strictQuery: true }
 );

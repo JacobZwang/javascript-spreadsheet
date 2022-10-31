@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [],
+  content: ["./**/*.{vue,js}"],
   theme: {
     extend: {},
   },
@@ -13,6 +13,7 @@ module.exports = {
     "./nuxt.config.{js,ts}",
   ],
   daisyui: {
+    styled: true,
     themes: ["night"],
   },
 };

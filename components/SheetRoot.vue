@@ -240,64 +240,58 @@ watch(state, () => {
 </script>
 
 <template>
-  <div
-    class="flex items-center justify-between p-4 gap-8 sticky top-0 bg-base-100"
-  >
-    <div class="flex gap-8">
-      <div class="inline-flex text-sm whitespace-nowrap gap-4 items-center">
-        <input
-          type="checkbox"
-          class="checkbox checkbox-sm"
-          v-model="state.continuous"
-        />
-        <p>continuous refresh</p>
-      </div>
-      <div class="inline-flex text-sm whitespace-nowrap gap-4 items-center">
-        <input
-          type="checkbox"
-          class="checkbox checkbox-sm"
-          v-model="debug.showDebug"
-        />
-        <p>show debug info</p>
-      </div>
-    </div>
-    <div class="flex gap-4">
-      <a href="/signup" class="btn btn-sm btn-primary">sign up</a>
-      <a href="/login" class="btn btn-sm">sign in</a>
-    </div>
-  </div>
+  <Teleport to="#menu-portal">
+    <label class="inline-flex text-sm whitespace-nowrap gap-4 items-center">
+      <input
+        type="checkbox"
+        class="checkbox checkbox-sm"
+        v-model="state.continuous"
+      />
+      <p>continuous refresh</p>
+    </label>
+    <label class="inline-flex text-sm whitespace-nowrap gap-4 items-center">
+      <input
+        type="checkbox"
+        class="checkbox checkbox-sm"
+        v-model="debug.showDebug"
+      />
+      <p>show debug info</p>
+    </label>
+  </Teleport>
 
-  <div
-    class="grid"
-    :style="{
-      gridTemplateColumns: state.columns.map((c) => c.width + 'px').join(' '),
-    }"
-    v-for="row in state.rows"
-    :key="row.index"
-  >
-    <!-- row indexes -->
+  <div class="w-screen h-full overflow-scroll">
     <div
-      class="text-center sheet-input !bg-gray-700 mt-auto"
-      :class="{
-        'h-full': debug.showDebug,
+      class="grid"
+      :style="{
+        gridTemplateColumns: state.columns.map((c) => c.width + 'px').join(' '),
       }"
+      v-for="row in state.rows"
+      :key="row.index"
     >
-      {{ row.index }}
-    </div>
-
-    <div v-for="cell in row.cells" :key="cell.column">
-      <!-- column headers -->
-      <div v-if="cell.row === 0" class="text-center sheet-input !bg-gray-800">
-        {{ cell.column }}
+      <!-- row indexes -->
+      <div
+        class="text-center sheet-input !bg-gray-700 mt-auto"
+        :class="{
+          'h-full': debug.showDebug,
+        }"
+      >
+        {{ row.index }}
       </div>
 
-      <!-- the cell input and display -->
-      <!-- when blurred it triggers an update to recompute the sheet -->
-      <SheetCell :cell="cell" @update="tick" />
+      <div v-for="cell in row.cells" :key="cell.column">
+        <!-- column headers -->
+        <div v-if="cell.row === 0" class="text-center sheet-input !bg-gray-800">
+          {{ cell.column }}
+        </div>
 
-      <!-- show json output of cell if debug mode on -->
-      <div v-if="debug.showDebug" class="text-xs whitespace-pre-wrap">
-        {{ JSON.stringify(cell, null, 4) }}
+        <!-- the cell input and display -->
+        <!-- when blurred it triggers an update to recompute the sheet -->
+        <SheetCell :cell="cell" @update="tick" />
+
+        <!-- show json output of cell if debug mode on -->
+        <div v-if="debug.showDebug" class="text-xs whitespace-pre-wrap">
+          {{ JSON.stringify(cell, null, 4) }}
+        </div>
       </div>
     </div>
   </div>

@@ -11,8 +11,8 @@ const props = defineProps<{
 
 <template>
   <div class="flex justify-center mt-12">
-    <div class="max-w-md grid gap-2 w-full">
-      <h1 class="text-lg">{{ props.message }}</h1>
+    <div class="max-w-md grid gap-2 w-full auto-rows-min">
+      <h1 class="text-2xl mb-4">{{ props.message }}</h1>
       <label>
         <span class="text-xs"> Email </span>
         <input
@@ -30,7 +30,7 @@ const props = defineProps<{
         />
       </label>
       <button class="btn mt-6" @click="() => props.callback(email, password)">
-        login
+        continue
       </button>
     </div>
   </div>

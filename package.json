@@ -11,6 +11,8 @@
     "@pinia/nuxt": "^0.4.3",
     "autoprefixer": "^10.4.13",
     "daisyui": "^2.36.1",
+    "dotenv": "^16.0.3",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.7.0",
     "mongoose-bcrypt": "^1.10.0",
     "nuxt": "3.0.0-rc.12",

@@ -6,3 +6,5 @@ node_modules
 .output
 .env
 dist
+jwtRS256.key
+jwtRS256.key.pub

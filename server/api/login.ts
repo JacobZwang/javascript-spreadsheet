@@ -1,4 +1,5 @@
-import { users } from "../../models";
+import { users } from "../models";
+import { createSession } from "~~/server/utils/sessions";
 
 interface IRequestBody {
   email: string;
@@ -6,7 +7,7 @@ interface IRequestBody {
 }
 
 export default defineEventHandler(async (event) => {
-  console.log("POST /api/users/login");
+  console.log("POST /api/login");
   const { email, password } = await useBody<IRequestBody>(event);
 
   // Check if email is passed.
@@ -14,7 +15,7 @@ export default defineEventHandler(async (event) => {
     event.res.statusCode = 400;
     return {
       code: "EMAIL_REQUIRED",
-      message: "Body malformed: email is required.",
+      message: "Email is required.",
     };
   }
 
@@ -23,7 +24,7 @@ export default defineEventHandler(async (event) => {
     event.res.statusCode = 400;
     return {
       code: "PASSWORD_REQUIRED",
-      message: "Body malformed: password is required.",
+      message: "Password is required.",
     };
   }
 
@@ -34,19 +35,21 @@ export default defineEventHandler(async (event) => {
     });
     if (userData) {
       console.log("User found");
+      //@ts-expect-error: mongoose-bcrypt isn't properly typed
       const isPasswordValid = await userData.verifyPasswordSync(password);
       if (isPasswordValid) {
-        // Generate token or create session here
+        // set session cookie
+        createSession(event, userData);
+
         return {
           id: userData._id,
-          username: userData.username,
         };
       } else {
         console.log("Password is not valid");
         event.res.statusCode = 404;
         return {
           code: "USER_NOT_FOUND",
-          message: "User with given email and password doesn't exists.",
+          message: "Email or password is incorrect.",
         };
       }
     } else {
@@ -54,7 +57,7 @@ export default defineEventHandler(async (event) => {
       event.res.statusCode = 404;
       return {
         code: "USER_NOT_FOUND",
-        message: "User with given email and password doesn't exists.",
+        message: "Email or password is incorrect.",
       };
     }
   } catch (err) {

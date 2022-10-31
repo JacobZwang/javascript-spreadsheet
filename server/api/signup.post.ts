@@ -1,4 +1,5 @@
-import { users } from "../../models";
+import { users } from "../models";
+import { createSession } from "~~/server/utils/sessions";
 
 interface IRequestBody {
   email: string;
@@ -6,7 +7,7 @@ interface IRequestBody {
 }
 
 export default defineEventHandler(async (event) => {
-  console.log("POST /api/users/signup");
+  console.log("POST /api/signup");
   const { email, password } = await useBody<IRequestBody>(event);
   try {
     const userData = await users.findOne({
@@ -24,11 +25,13 @@ export default defineEventHandler(async (event) => {
       const newUserData = await users.create({
         email,
         password,
-        name,
       });
+
+      // set session cookie
+      createSession(event, newUserData);
+
       return {
         id: newUserData._id,
-        name: newUserData.username,
       };
     }
   } catch (err) {

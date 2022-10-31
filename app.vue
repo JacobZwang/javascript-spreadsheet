@@ -3,7 +3,7 @@ import "./assets/css/main.css";
 </script>
 
 <template>
-  <div>
+  <NuxtLayout>
     <Head>
       <link rel="preconnect" href="https://fonts.googleapis.com" />
       <link
@@ -20,5 +20,5 @@ import "./assets/css/main.css";
     </Head>
 
     <NuxtPage />
-  </div>
+  </NuxtLayout>
 </template>
