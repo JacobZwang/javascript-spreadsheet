@@ -1,7 +1,9 @@
 import jwt from "jsonwebtoken";
 
+const config = useRuntimeConfig();
+
 export function createSession(event, user) {
-  const token = jwt.sign({ user: { id: user._id } }, process.env.PRIVATE_KEY, {
+  const token = jwt.sign({ user: { id: user._id } }, config.PRIVATE_KEY, {
     algorithm: "RS256",
   });
 
@@ -17,7 +19,7 @@ export function verifySession(event) {
   if (token) {
     let session;
     try {
-      session = jwt.verify(token, process.env.PRIVATE_KEY, {
+      session = jwt.verify(token, config.PRIVATE_KEY, {
         algorithms: ["RS256"],
       });
 

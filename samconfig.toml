@@ -1,0 +1,11 @@
+version = 0.1
+[default]
+[default.deploy]
+[default.deploy.parameters]
+stack_name = "javascript-spreadsheet"
+s3_bucket = "aws-sam-cli-managed-default-samclisourcebucket-u9p2jckw1c6r"
+s3_prefix = "javascript-spreadsheet"
+region = "us-west-2"
+capabilities = "CAPABILITY_IAM"
+parameter_overrides = "StageName=\"$default\""
+image_repositories = []

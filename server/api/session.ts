@@ -22,7 +22,11 @@ export default defineEventHandler(async (event) => {
         email: userData.email,
         id: event.context.session.user.id,
       },
-      sheets: results ?? [],
+      sheets:
+        results.map((s) => ({
+          ...s.toObject(),
+          id: s._id,
+        })) ?? [],
     },
   };
 });

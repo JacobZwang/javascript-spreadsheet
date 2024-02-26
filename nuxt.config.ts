@@ -18,9 +18,15 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     PRIVATE_KEY: process.env.PRIVATE_KEY,
-    mongoUrl: "mongodb://root:password@localhost:27017/",
+    // mongoUrl: "mongodb://root:password@localhost:27017/",
+    MONGO_URL: process.env.MONGO_URL,
   },
   nitro: {
     plugins: ["~/server/index.ts"],
+    preset: "aws-lambda",
+    // serveStatic: true,
+  },
+  app: {
+    cdnURL: "https://d2fgba9ozxhh9u.cloudfront.net",
   },
 });

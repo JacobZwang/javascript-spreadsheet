@@ -11,6 +11,6 @@ const { data } = (await useFetch("/api/sheets/" + id, {
 
 <template>
   <div>
-    <SheetRoot :sheet="data" :id="data.id" />
+    <SheetRoot :sheet="data" :id="route.params.sheet" />
   </div>
 </template>
